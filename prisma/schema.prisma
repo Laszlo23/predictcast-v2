@@ -1,0 +1,217 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  fid         Int      @unique // Farcaster ID
+  username    String?
+  displayName String?
+  pfpUrl      String?
+  bio         String?  // New: User bio
+  isVerified  Boolean  @default(false) // New: Verified user
+  reputation  Int      @default(0) // New: User reputation score
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  predictions Prediction[]
+  markets     Market[]
+  stats       UserStats?
+  comments    Comment[]
+  follows     UserFollow[] @relation("UserFollows")
+  followers   UserFollow[] @relation("UserFollowers")
+  badges      UserBadge[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Market {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  question    String
+  description String?
+  category    String?     // New: Market category
+  tags        String[]    // New: Market tags
+  marketType  MarketType  @default(BINARY) // New: Market type
+  options     Json?       // New: For multi-outcome markets
+  optionA     String      // "Yes" or first option
+  optionB     String      // "No" or second option
+  expiresAt   DateTime
+  resolvedAt  DateTime?
+  outcome     MarketOutcome?
+  isActive    Boolean     @default(true) // New: Market status
+  isFeatured  Boolean     @default(false) // New: Featured markets
+  totalVolume Int         @default(0) // New: Total volume traded
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  creatorId   String
+  creator     User        @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  predictions Prediction[]
+  comments    Comment[]   // New: Market comments
+  followers   MarketFollow[] // New: Market followers
+
+  @@map("markets")
+}
+
+model Prediction {
+  id        String   @id @default(cuid())
+  marketId  String
+  userId    String
+  choice    PredictionChoice
+  amount    Int      // Amount wagered (in points or tokens)
+  createdAt DateTime @default(now())
+
+  // Relations
+  market Market @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([marketId, userId]) // One prediction per user per market
+  @@map("predictions")
+}
+
+model UserStats {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  totalPredictions Int     @default(0)
+  correctPredictions Int   @default(0)
+  totalWagered    Int      @default(0)
+  totalWon        Int      @default(0)
+  winRate         Float    @default(0.0)
+  rank            Int?
+  lastUpdated     DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_stats")
+}
+
+// New Models for v2
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  marketId  String
+  userId    String
+  parentId  String?  // For replies
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  market   Market @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent   Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+
+  @@map("comments")
+}
+
+model UserFollow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  // Relations
+  follower  User @relation("UserFollows", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@map("user_follows")
+}
+
+model MarketFollow {
+  id        String   @id @default(cuid())
+  marketId  String
+  userId    String
+  createdAt DateTime @default(now())
+
+  // Relations
+  market Market @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([marketId, userId])
+  @@map("market_follows")
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeType BadgeType
+  earnedAt  DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeType])
+  @@map("user_badges")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?            // Additional data
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// Enhanced Enums
+enum MarketType {
+  BINARY
+  MULTIPLE_CHOICE
+  NUMERIC
+  TIME_BASED
+}
+
+enum MarketOutcome {
+  OPTION_A
+  OPTION_B
+  CANCELLED
+  MULTIPLE_OUTCOMES
+}
+
+enum PredictionChoice {
+  OPTION_A
+  OPTION_B
+  MULTIPLE_CHOICE
+}
+
+enum BadgeType {
+  FIRST_PREDICTION
+  PERFECT_WEEK
+  MARKET_CREATOR
+  TOP_PREDICTOR
+  SOCIAL_BUTTERFLY
+  EARLY_BIRD
+  RISK_TAKER
+  CONSERVATIVE
+}
+
+enum NotificationType {
+  MARKET_CREATED
+  MARKET_RESOLVED
+  PREDICTION_CORRECT
+  NEW_FOLLOWER
+  MENTION
+  MARKET_FOLLOWED
+  BADGE_EARNED
+}
