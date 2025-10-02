@@ -1,0 +1,21 @@
+{
+  "name": "PredictCast",
+  "description": "A decentralized prediction market platform built on Farcaster",
+  "version": "2.0.0",
+  "icon": "/icon.png",
+  "splash": "/splash.png",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#00d4ff",
+  "background_color": "#0f0f23",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["finance", "social", "entertainment"],
+  "farcaster": {
+    "frame_url": "https://predictcast-v2.vercel.app/frames",
+    "frame_image": "https://predictcast-v2.vercel.app/api/og",
+    "frame_button_text": "PredictCast",
+    "frame_post_url": "https://predictcast-v2.vercel.app/frames",
+    "frame_redirect_url": "https://predictcast-v2.vercel.app"
+  }
+}

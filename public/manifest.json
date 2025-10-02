@@ -1,0 +1,85 @@
+{
+  "name": "PredictCast",
+  "description": "A decentralized prediction market platform built on Farcaster",
+  "version": "2.0.0",
+  "icon": "/icon.png",
+  "splash": "/splash.png",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#00d4ff",
+  "background_color": "#0f0f23",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["finance", "social", "entertainment"],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot2.png", 
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "features": [
+    "Create prediction markets",
+    "Make predictions on various topics",
+    "Follow other users",
+    "Earn badges and achievements",
+    "Social feed and comments",
+    "Real-time notifications",
+    "Multi-outcome predictions",
+    "Market categories and tags"
+  ],
+  "shortcuts": [
+    {
+      "name": "Create Market",
+      "short_name": "Create",
+      "description": "Create a new prediction market",
+      "url": "/create",
+      "icons": [
+        {
+          "src": "/shortcut-create.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Markets",
+      "short_name": "Markets", 
+      "description": "Browse all prediction markets",
+      "url": "/markets",
+      "icons": [
+        {
+          "src": "/shortcut-markets.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Social Feed",
+      "short_name": "Social",
+      "description": "View social feed and activity",
+      "url": "/social",
+      "icons": [
+        {
+          "src": "/shortcut-social.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "farcaster": {
+    "frame_url": "https://predictcast-v2.vercel.app/frames",
+    "frame_image": "https://predictcast-v2.vercel.app/api/og",
+    "frame_button_text": "PredictCast",
+    "frame_post_url": "https://predictcast-v2.vercel.app/frames",
+    "frame_redirect_url": "https://predictcast-v2.vercel.app"
+  }
+}
