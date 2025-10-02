@@ -22,9 +22,10 @@ export default async function handler(req: NextRequest) {
     const timeLeft = expiresAt ? getTimeLeft(new Date(expiresAt)) : 'Expired';
 
     return new ImageResponse(
-      (
-        <div
-          style={{
+      {
+        type: 'div',
+        props: {
+          style: {
             height: '100%',
             width: '100%',
             display: 'flex',
@@ -36,123 +37,180 @@ export default async function handler(req: NextRequest) {
             fontFamily: 'system-ui, sans-serif',
             color: 'white',
             padding: '40px',
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: '30px',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '32px',
-                fontWeight: 'bold',
-                background: 'linear-gradient(45deg, #00d4ff, #0099cc)',
-                backgroundClip: 'text',
-                color: 'transparent',
-              }}
-            >
-              PredictCast
-            </div>
-          </div>
-
-          {/* Question */}
-          <div
-            style={{
-              fontSize: '28px',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              marginBottom: '40px',
-              maxWidth: '800px',
-              lineHeight: '1.2',
-            }}
-          >
-            {question}
-          </div>
-
-          {/* Options */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '40px',
-              marginBottom: '30px',
-            }}
-          >
-            {/* Option A */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                padding: '20px',
-                backgroundColor: '#1a1a2e',
-                borderRadius: '12px',
-                border: '2px solid #00d4ff',
-                minWidth: '200px',
-              }}
-            >
-              <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>
-                {optionA}
-              </div>
-              <div style={{ fontSize: '24px', color: '#00d4ff' }}>
-                {optionAPercentage}%
-              </div>
-              <div style={{ fontSize: '14px', color: '#888' }}>
-                {optionAVotes} votes
-              </div>
-            </div>
-
-            {/* Option B */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                padding: '20px',
-                backgroundColor: '#1a1a2e',
-                borderRadius: '12px',
-                border: '2px solid #ff6b6b',
-                minWidth: '200px',
-              }}
-            >
-              <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>
-                {optionB}
-              </div>
-              <div style={{ fontSize: '24px', color: '#ff6b6b' }}>
-                {optionBPercentage}%
-              </div>
-              <div style={{ fontSize: '14px', color: '#888' }}>
-                {optionBVotes} votes
-              </div>
-            </div>
-          </div>
-
-          {/* Time Left */}
-          <div
-            style={{
-              fontSize: '18px',
-              color: timeLeft === 'Expired' ? '#ff6b6b' : '#00d4ff',
-              fontWeight: 'bold',
-            }}
-          >
-            {timeLeft === 'Expired' ? 'Market Closed' : `Time Left: ${timeLeft}`}
-          </div>
-
-          {/* Total Predictions */}
-          <div
-            style={{
-              fontSize: '16px',
-              color: '#888',
-              marginTop: '10px',
-            }}
-          >
-            {totalVotes} total predictions
-          </div>
-        </div>
-      ),
+          },
+          children: [
+            {
+              type: 'div',
+              props: {
+                style: {
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '30px',
+                },
+                children: [
+                  {
+                    type: 'div',
+                    props: {
+                      style: {
+                        fontSize: '32px',
+                        fontWeight: 'bold',
+                        background: 'linear-gradient(45deg, #00d4ff, #0099cc)',
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                      },
+                      children: 'PredictCast',
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              type: 'div',
+              props: {
+                style: {
+                  fontSize: '28px',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  marginBottom: '40px',
+                  maxWidth: '800px',
+                  lineHeight: '1.2',
+                },
+                children: question,
+              },
+            },
+            {
+              type: 'div',
+              props: {
+                style: {
+                  display: 'flex',
+                  gap: '40px',
+                  marginBottom: '30px',
+                },
+                children: [
+                  {
+                    type: 'div',
+                    props: {
+                      style: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        padding: '20px',
+                        backgroundColor: '#1a1a2e',
+                        borderRadius: '12px',
+                        border: '2px solid #00d4ff',
+                        minWidth: '200px',
+                      },
+                      children: [
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              fontSize: '20px',
+                              fontWeight: 'bold',
+                              marginBottom: '10px',
+                            },
+                            children: optionA,
+                          },
+                        },
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              fontSize: '24px',
+                              color: '#00d4ff',
+                            },
+                            children: `${optionAPercentage}%`,
+                          },
+                        },
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              fontSize: '14px',
+                              color: '#888',
+                            },
+                            children: `${optionAVotes} votes`,
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    type: 'div',
+                    props: {
+                      style: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        padding: '20px',
+                        backgroundColor: '#1a1a2e',
+                        borderRadius: '12px',
+                        border: '2px solid #ff6b6b',
+                        minWidth: '200px',
+                      },
+                      children: [
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              fontSize: '20px',
+                              fontWeight: 'bold',
+                              marginBottom: '10px',
+                            },
+                            children: optionB,
+                          },
+                        },
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              fontSize: '24px',
+                              color: '#ff6b6b',
+                            },
+                            children: `${optionBPercentage}%`,
+                          },
+                        },
+                        {
+                          type: 'div',
+                          props: {
+                            style: {
+                              fontSize: '14px',
+                              color: '#888',
+                            },
+                            children: `${optionBVotes} votes`,
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              type: 'div',
+              props: {
+                style: {
+                  fontSize: '18px',
+                  color: timeLeft === 'Expired' ? '#ff6b6b' : '#00d4ff',
+                  fontWeight: 'bold',
+                },
+                children: timeLeft === 'Expired' ? 'Market Closed' : `Time Left: ${timeLeft}`,
+              },
+            },
+            {
+              type: 'div',
+              props: {
+                style: {
+                  fontSize: '16px',
+                  color: '#888',
+                  marginTop: '10px',
+                },
+                children: `${totalVotes} total predictions`,
+              },
+            },
+          ],
+        },
+      },
       {
         width: 1200,
         height: 630,

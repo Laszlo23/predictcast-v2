@@ -19,7 +19,7 @@ export interface Market {
   category?: string;
   tags: string[];
   marketType: MarketType;
-  options?: any; // For multi-outcome markets
+  options?: Record<string, unknown>; // For multi-outcome markets
   optionA: string;
   optionB: string;
   expiresAt: Date;
@@ -125,7 +125,7 @@ export interface Notification {
   type: NotificationType;
   title: string;
   message: string;
-  data?: any;
+  data?: Record<string, unknown>;
   isRead: boolean;
   createdAt: Date;
   user?: User;

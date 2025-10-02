@@ -77,7 +77,7 @@ export default function Home() {
 
           {/* New Features Section */}
           <div className="mt-16 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl p-8 max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">What's New in v2.0</h2>
+            <h2 className="text-3xl font-bold text-white mb-6 text-center">What&apos;s New in v2.0</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">

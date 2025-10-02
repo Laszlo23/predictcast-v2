@@ -31,6 +31,7 @@ model User {
   followers   UserFollow[] @relation("UserFollowers")
   badges      UserBadge[]
   notifications Notification[]
+  marketFollows MarketFollow[]
 
   @@map("users")
 }

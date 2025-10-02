@@ -1,7 +1,16 @@
-import { NeynarAPIClient } from '@neynar/nodejs-sdk';
+import { NeynarAPIClient, Configuration } from '@neynar/nodejs-sdk';
 import { FrameData } from '@/types';
 
-const neynar = new NeynarAPIClient(process.env.NEYNAR_API_KEY!);
+const config = new Configuration({
+  apiKey: process.env.NEYNAR_API_KEY!,
+  baseOptions: {
+    headers: {
+      "x-neynar-experimental": true,
+    },
+  },
+});
+
+const neynar = new NeynarAPIClient(config);
 
 export async function verifyFrameSignature(frameData: FrameData): Promise<boolean> {
   try {
